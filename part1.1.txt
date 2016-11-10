@@ -1,0 +1,139 @@
+###
+
+dig @haig.cs.ucl.ac.uk . NS
+
+	;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 23893
+	;; flags: qr rd ra; QUERY: 1, ANSWER: 13, AUTHORITY: 0, ADDITIONAL: 27
+
+	;; QUESTION SECTION:
+	;.				IN	NS
+
+	;; ANSWER SECTION:
+	.			471749	IN	NS	j.root-servers.net.
+	.			471749	IN	NS	m.root-servers.net.
+	.			471749	IN	NS	l.root-servers.net.
+	.			471749	IN	NS	i.root-servers.net.
+	.			471749	IN	NS	k.root-servers.net.
+	.			471749	IN	NS	a.root-servers.net.
+	.			471749	IN	NS	f.root-servers.net.
+	.			471749	IN	NS	e.root-servers.net.
+	.			471749	IN	NS	c.root-servers.net.
+	.			471749	IN	NS	d.root-servers.net.
+	.			471749	IN	NS	g.root-servers.net.
+	.			471749	IN	NS	b.root-servers.net.
+	.			471749	IN	NS	h.root-servers.net.
+
+	;; ADDITIONAL SECTION:
+	j.root-servers.net.	558149	IN	AAAA	2001:503:c27::2:30
+	j.root-servers.net.	558149	IN	A	192.58.128.30
+	m.root-servers.net.	558149	IN	AAAA	2001:dc3::35
+	m.root-servers.net.	558149	IN	A	202.12.27.33
+	l.root-servers.net.	558149	IN	AAAA	2001:500:9f::42
+	l.root-servers.net.	558149	IN	A	199.7.83.42
+	i.root-servers.net.	558149	IN	AAAA	2001:7fe::53
+	i.root-servers.net.	558149	IN	A	192.36.148.17
+	k.root-servers.net.	558149	IN	AAAA	2001:7fd::1
+	k.root-servers.net.	558149	IN	A	193.0.14.129
+	a.root-servers.net.	558149	IN	AAAA	2001:503:ba3e::2:30
+	a.root-servers.net.	558149	IN	A	198.41.0.4
+	f.root-servers.net.	558149	IN	AAAA	2001:500:2f::f
+	f.root-servers.net.	558149	IN	A	192.5.5.241
+	e.root-servers.net.	558149	IN	AAAA	2001:500:a8::e
+	e.root-servers.net.	558149	IN	A	192.203.230.10
+	c.root-servers.net.	558149	IN	AAAA	2001:500:2::c
+	c.root-servers.net.	558149	IN	A	192.33.4.12
+	d.root-servers.net.	558149	IN	AAAA	2001:500:2d::d
+	d.root-servers.net.	558149	IN	A	199.7.91.13
+	g.root-servers.net.	558149	IN	AAAA	2001:500:12::d0d
+	g.root-servers.net.	558149	IN	A	192.112.36.4
+	b.root-servers.net.	558149	IN	AAAA	2001:500:84::b
+	b.root-servers.net.	558149	IN	A	192.228.79.201
+	h.root-servers.net.	558149	IN	AAAA	2001:500:1::53
+	h.root-servers.net.	558149	IN	A	198.97.190.53
+
+
+
+###
+
+dig @198.41.0.4 www.xorp.org. +norecurse
+
+	; <<>> DiG 9.9.4-RedHat-9.9.4-29.el7_2.4 <<>> @198.41.0.4 www.xorp.org. +norecurse
+	; (1 server found)
+	;; global options: +cmd
+	;; Got answer:
+	;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 22427
+	;; flags: qr; QUERY: 1, ANSWER: 0, AUTHORITY: 6, ADDITIONAL: 13
+
+	;; QUESTION SECTION:
+	;www.xorp.org.			IN	A
+
+	;; AUTHORITY SECTION:
+	org.			172800	IN	NS	d0.org.afilias-nst.org.
+	org.			172800	IN	NS	a0.org.afilias-nst.info.
+	org.			172800	IN	NS	c0.org.afilias-nst.info.
+	org.			172800	IN	NS	a2.org.afilias-nst.info.
+	org.			172800	IN	NS	b0.org.afilias-nst.org.
+	org.			172800	IN	NS	b2.org.afilias-nst.org.
+
+	;; ADDITIONAL SECTION:
+	d0.org.afilias-nst.org.	172800	IN	A	199.19.57.1
+	d0.org.afilias-nst.org.	172800	IN	AAAA	2001:500:f::1
+	a0.org.afilias-nst.info. 172800	IN	A	199.19.56.1
+	a0.org.afilias-nst.info. 172800	IN	AAAA	2001:500:e::1
+	c0.org.afilias-nst.info. 172800	IN	A	199.19.53.1
+	c0.org.afilias-nst.info. 172800	IN	AAAA	2001:500:b::1
+	a2.org.afilias-nst.info. 172800	IN	A	199.249.112.1
+	a2.org.afilias-nst.info. 172800	IN	AAAA	2001:500:40::1
+	b0.org.afilias-nst.org.	172800	IN	A	199.19.54.1
+	b0.org.afilias-nst.org.	172800	IN	AAAA	2001:500:c::1
+	b2.org.afilias-nst.org.	172800	IN	A	199.249.120.1
+	b2.org.afilias-nst.org.	172800	IN	AAAA	2001:500:48::1
+
+### 
+
+dig @199.19.56.1 www.xorp.org. +norecurse
+
+	; <<>> DiG 9.9.4-RedHat-9.9.4-29.el7_2.4 <<>> @199.19.56.1 www.xorp.org. +norecurse
+	; (1 server found)
+	;; global options: +cmd
+	;; Got answer:
+	;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 49473
+	;; flags: qr; QUERY: 1, ANSWER: 0, AUTHORITY: 2, ADDITIONAL: 3
+
+	;; QUESTION SECTION:
+	;www.xorp.org.			IN	A
+
+	;; AUTHORITY SECTION:
+	xorp.org.		86400	IN	NS	ns.xorp.org.
+	xorp.org.		86400	IN	NS	ns2.xorp.org.
+
+	;; ADDITIONAL SECTION:
+	ns.xorp.org.		86400	IN	A	128.16.70.254
+	ns2.xorp.org.		86400	IN	A	193.63.58.145
+
+###
+
+dig @193.63.58.145 www.xorp.org. +norecurse
+
+	; <<>> DiG 9.9.4-RedHat-9.9.4-29.el7_2.4 <<>> @193.63.58.145 www.xorp.org. +norecurse
+	; (1 server found)
+	;; global options: +cmd
+	;; Got answer:
+	;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 12121
+	;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 2, ADDITIONAL: 3
+
+	;; QUESTION SECTION:
+	;www.xorp.org.			IN	A
+
+	;; ANSWER SECTION:
+	www.xorp.org.		3600	IN	A	208.74.158.171
+
+	;; AUTHORITY SECTION:
+	xorp.org.		3600	IN	NS	ns2.xorp.org.
+	xorp.org.		3600	IN	NS	ns.xorp.org.
+
+	;; ADDITIONAL SECTION:
+	ns.xorp.org.		3600	IN	A	128.16.70.254
+	ns2.xorp.org.		3600	IN	A	193.63.58.145
+
+
