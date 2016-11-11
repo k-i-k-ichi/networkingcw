@@ -127,6 +127,43 @@ while 1:
   if not data:
     log.error("client provided no data")
     continue
+  else:
+    print "Query from client is : \n", hexdump(data)
+    queryheader = Header.fromData(data)
+    print "Query header received from client is: \n", hexdump(queryheader.pack())
+    continue
+
+  # Parse input from SS
+    # retrieve hostname
+  
+  
+  # Perform recursive lookup
+    # If found in cache, assign value, return
+    
+    # If not, send query to other dns until found
+        
+      # add to stack (servername[], queryname)
+      # While stack contains query
+        # pop from the stack, query on current servername.
+        # If additional section exists
+          # current_servername = next sever response packet's server 
+          # queryname = same
+          # add to stack servername, queryname
+        # If no additional section aka glue record
+          # queryname = newquery
+          # servername = root[]
+        
+      # If Answer section count == 1, type = Cname
+        # set queryname = CNAME
+        # Query the same previous DNS
+      # If Answer section count == 1, type = A
+        # add key-pair value to cache
+        # set TTL field returned from other dns server
+        # construct return packet 
+        # reply = 
+        
+      
+      
   
   #
   # TODO: Insert code here to perform the recursive DNS lookup;
