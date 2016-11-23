@@ -136,7 +136,7 @@ while 1:
     
   print "Query received from client is:\n", hexdump(data)
   queryheader = Header.fromData(data)
-  print "Query header received from client is:\n", hexdump(queryheader.pack()
+  print "Query header received from client is:\n", hexdump(queryheader.pack())
   
 
   logger.log(DEBUG2, "our reply in full:") 
