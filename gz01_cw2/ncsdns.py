@@ -128,7 +128,7 @@ while 1:
     log.error("client provided no data")
     continue
   header = Header.fromData(data)
-  question = QE.fromData(data, len(header_binary))
+  question = QE.fromData(data, len(header))
   print header
   print question
 
