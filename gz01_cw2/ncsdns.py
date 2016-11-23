@@ -127,12 +127,12 @@ while 1:
   if not data:
     log.error("client provided no data")
     continue
-  header = Header.fromData(data)	
-  question = QE.fromData(data, len(header))
+  header = pack(Header.fromData(data))
+  question = pack(QE.fromData(data, len(header)))
   rr = RR.fromData(data, len(header) + len(question))
 
-  cs.sendto("8.8.8.8", data)
-  (reply, _) = cs.recvfrom(512)
+  cs.sendto(data, ("8.8.8.8", "53"))
+  (reply, _,) = cs.recvfrom(512)
     
   print "Query received from client is:\n", hexdump(data)
   queryheader = Header.fromData(data)
