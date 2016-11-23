@@ -131,8 +131,8 @@ while 1:
   header_binary = header.pack()
   question = QE.fromData(data, len(header_binary))
   question_binary = question.pack()
-  rr = RR.fromData(data, len(header_binary) + len(question_binary))
-
+  print header
+  print question
   cs.sendto(data, ("8.8.8.8", "53"))
   (reply, _,) = cs.recvfrom(512)
     
