@@ -133,14 +133,11 @@ while 1:
   question_binary = question.pack()
   print header
   print question
+  (rr, rr_length,) = RR.fromData(data)
   cs.sendto(data, ("8.8.8.8", "53"))
   (reply, _,) = cs.recvfrom(512)
     
-  print "Query received from client is:\n", hexdump(data)
-  queryheader = Header.fromData(data)
-  print "Query header received from client is:\n", hexdump(queryheader.pack())
   
-
   logger.log(DEBUG2, "our reply in full:") 
   logger.log(DEBUG2, hexdump(reply))
 
