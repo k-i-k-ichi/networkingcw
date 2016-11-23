@@ -132,7 +132,7 @@ while 1:
   print header
   print question
   data = header.pack() + question.pack()
-  cs.sendto(data, ("8.8.8.8", "53"))
+  cs.sendto(data, ("8.8.8.8", 53))
   (reply, _,) = cs.recvfrom(512)
    
   
