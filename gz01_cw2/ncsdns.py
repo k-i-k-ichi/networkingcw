@@ -127,9 +127,11 @@ while 1:
   if not data:
     log.error("client provided no data")
     continue
-  header = pack(Header.fromData(data))
-  question = pack(QE.fromData(data, len(header)))
-  rr = RR.fromData(data, len(header) + len(question))
+  header = Header.fromData(data)
+  header_binary = header.pack()
+  question = QE.fromData(data, len(header_binary))
+  question_binary = question.pack()
+  rr = RR.fromData(data, len(header_binary) + len(question_binary))
 
   cs.sendto(data, ("8.8.8.8", "53"))
   (reply, _,) = cs.recvfrom(512)
