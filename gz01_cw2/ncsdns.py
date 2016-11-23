@@ -127,61 +127,17 @@ while 1:
   if not data:
     log.error("client provided no data")
     continue
-	
+  header = Header.fromData(data)	
+  question = QE.fromData(data, len(header))
+  rr = RR.fromData(data, len(header) + len(question))
 
-  print "Query received from client is:\n", hexdump(data)
-	queryheader = Header.fromData(data)
-	print "Query header received from client is:\n", hexdump(queryheader.pack()
-  
-  # Perform recursive lookup
-    # If found in cache, assign value, return
+  cs.sendto("8.8.8.8", data)
+  (reply, _) = cs.recvfrom(512)
     
-    # If not, send query to other dns until found
-			# Constructs an initial empty reply packet      
-			# servername = b.root
-      # add to stack (servername, querydomainname)
-      
-			# While stack contains query
-				# pop from the stack
-				# if servername found in cache
-					# set answer section in reply object
-					# TODO: handle CNAME
-				# else
-					# send query 
-					# get return dns packet
-					# If answer section count > 0
-						# Add all entries of the section to cache			
-					# If authority section count > 0, and not SOA ( deadend)
-						# Add all pair with ( AR_sectionserverip, querydomain name) to stack
-						# where AR_sectionserverip are dns server we got back from the query
-						# querydomain name is the domainname of the query we just pop from stack				
-												
-						# If NS from authoritive section exist in glue record					
-							# add all glue record in additional section to cache
-				    # If NS not contains in cache or glue record
-
-				  # If authority section count > 0, is a SOA.
-						# Add SOA entry to authority section of the reply object
-
-					# Else just skip to the next iteration of the loop
-					
-        
-      # If Answer section count == 1, type = Cname
-        # set queryname = CNAME
-        # Query the same previous DNS
-      # If Answer section count == 1, type = A
-        # add key-pair value to cache
-        # set TTL field returned from other dns server
-        # construct return packet 
-        # reply = 
-        
-      
-      
+  print "Query received from client is:\n", hexdump(data)
+  queryheader = Header.fromData(data)
+  print "Query header received from client is:\n", hexdump(queryheader.pack()
   
-  #
-  # TODO: Insert code here to perform the recursive DNS lookup;
-  #       putting the result in reply.
-  #
 
   logger.log(DEBUG2, "our reply in full:") 
   logger.log(DEBUG2, hexdump(reply))
