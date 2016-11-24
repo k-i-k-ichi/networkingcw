@@ -5,7 +5,6 @@ from optparse import OptionParser, OptionValueError
 import pprint
 from random import seed, randint
 import struct
-import Stack
 from socket import *
 from sys import exit, maxint as MAXINT
 from time import time, sleep
@@ -139,10 +138,10 @@ while 1:
   current_query_name = question._dn  
   print current_query_name
   # create query stack
-  query_stack = Stack()
+  query_stack = [] 
 
   # add the first query into stack
-  # current_query_name = stack.pop()
+  # current_query_name = query_stack.pop()
   # last matching length = 0 
   # while 1: 
     # Add reply authoritive section to dn cache
