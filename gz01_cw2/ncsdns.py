@@ -5,6 +5,7 @@ from optparse import OptionParser, OptionValueError
 import pprint
 from random import seed, randint
 import struct
+import Stack
 from socket import *
 from sys import exit, maxint as MAXINT
 from time import time, sleep
