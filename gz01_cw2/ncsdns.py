@@ -124,7 +124,7 @@ cs = socket(AF_INET, SOCK_DGRAM)
 def nscache_lookup(string, cache):
   print "125"
   result = cache.get(string)
-  print "126"
+  print "127"
   
   while result == None:
     delimiter_index = 0
