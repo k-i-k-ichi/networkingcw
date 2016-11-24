@@ -135,7 +135,7 @@ while 1:
   (reply, _,) = cs.recvfrom(512)
   reply_header = Header.fromData(data)
 
-  current_query_name = question.__dn  
+  current_query_name = question._dn  
   print current_query_name
   # create query stack
   query_stack = Stack()
