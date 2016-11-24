@@ -129,6 +129,7 @@ def nscache_lookup(string, cache):
   
   while result_dict_obj == None:
     delimiter_index = 0
+    print string[delimiter_index:] 
     delimiter_index = string.find('.', delimiter_index) + 1 
     if delimiter_index >= len(string):
       delimiter_index = len(string)
