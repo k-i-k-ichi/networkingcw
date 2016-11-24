@@ -130,17 +130,20 @@ while 1:
 
   header = Header.fromData(data)
   question = QE.fromData(data, len(header))
-  data = header.pack() + question.pack()
 
   cs.sendto(data, (ROOTNS_DN, 53))
   (reply, _,) = cs.recvfrom(512)
   reply_header = Header.fromData(data)
-  
+
+  current_query_name = question.__dn  
+
   # create query stack
+  query_stack = Stack()
+
   # add the first query into stack
   # current_query_name = stack.pop()
   # last matching length = 0 
-  while 1: 
+  # while 1: 
     # Add reply authoritive section to dn cache
     # Add reply glue entry to address cache
     # Search in cache for the longest machting of domain name - dns name
