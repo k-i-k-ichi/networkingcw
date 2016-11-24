@@ -131,7 +131,8 @@ def nscache_lookup(string, cache):
     index = string.find('.', index) + 1 
     if index >= len(string):
       index = len(string) - 1
-    result_dict_obj = cache.get(DomainName(string[index:]))
+    tempobj = DomainName(string[index:])
+    result_dict_obj = cache.get(tempobj)
   return result_dict_obj
    
    
