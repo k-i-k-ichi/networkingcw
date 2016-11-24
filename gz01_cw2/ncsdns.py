@@ -127,14 +127,39 @@ while 1:
   if not data:
     log.error("client provided no data")
     continue
+
   header = Header.fromData(data)
   question = QE.fromData(data, len(header))
-  print header
-  print question
   data = header.pack() + question.pack()
-  cs.sendto(data, ("8.8.8.8", 53))
+
+  cs.sendto(data, (ROOTNS_DN, 53))
   (reply, _,) = cs.recvfrom(512)
-   
+  reply_header = Header.fromData(data)
+  
+  # create query stack
+  # add the first query into stack
+  # current_query_name = stack.pop()
+  # last matching length = 0 
+  while 1: 
+    # Add reply authoritive section to dn cache
+    # Add reply glue entry to address cache
+    # Search in cache for the longest machting of domain name - dns name
+      # matching_length = substringlength(current_query_name, cache_match)
+    # Search in addr cache for address of that domainname
+    # if dnserver not found in address cache
+      # add current_query_name to cache
+      # current_query_name = dnserver name
+      # continue
+    # if reply header answer count != 0 and stack.size() != 0 
+      # current_query_name = stack.pop()
+      # continue
+    # else if reply header answer count != 0 and stack.size() == 0
+      # break
+    # else if (if we are not making progress)
+      # break  
+
+    
+        
   
   logger.log(DEBUG2, "our reply in full:") 
   logger.log(DEBUG2, hexdump(reply))
