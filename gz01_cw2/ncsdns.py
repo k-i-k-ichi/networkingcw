@@ -136,7 +136,7 @@ while 1:
   reply_header = Header.fromData(data)
 
   current_query_name = question.__dn  
-
+  print current_query_name
   # create query stack
   query_stack = Stack()
 
