@@ -149,13 +149,14 @@ while 1:
 
   # create query stack
   query_stack = [] 
-
+  current_query_name = str(question._dn)
   # lookup_cache for the longest dns that match the query name:
   ns_list = nscache_lookup(current_query_name, nscache) 
 
   # add the first query into stack
   for dn_object in reverse(ns_list.items()):
     query_stack.append((str(question._dn), str(dn_object)))
+
   current_query_name = query_stack.pop()[1]
 
   print current_query_name
