@@ -124,16 +124,14 @@ cs = socket(AF_INET, SOCK_DGRAM)
 def nscache_lookup(string, cache):
   print "125"
   result_dict_obj = cache.get(string)
-
   print "127"
-  
   while result_dict_obj == None:
     index = 0
     print string[index:]
     index = string.find('.', index) + 1 
     if index >= len(string):
       index = len(string) - 1
-    result_dict_obj = cache.get(string[index:])
+    result_dict_obj = cache.get(DomainName(string[index:]))
   return result_dict_obj
    
    
