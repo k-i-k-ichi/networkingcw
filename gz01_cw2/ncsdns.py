@@ -119,7 +119,19 @@ sys.stdout.flush()
 # servers:
 setdefaulttimeout(TIMEOUT)
 cs = socket(AF_INET, SOCK_DGRAM)
-
+ 
+# Lookup address in nscache
+def nscache_lookup(string, cache):
+  result = cache.get(string)
+  while result == None:
+    delimiter_index = 0
+    delimiter_index = string.find('.', delimiter_index) + 1 
+    result = cache.get(string[delimiter_index:])
+  return result
+   
+   
+   
+    
 # This is a simple, single-threaded server that takes successive
 # connections with each iteration of the following loop:
 while 1:
@@ -135,14 +147,19 @@ while 1:
   (reply, _,) = cs.recvfrom(512)
   reply_header = Header.fromData(data)
 
-  current_query_name = question._dn  
-  print current_query_name
   # create query stack
   query_stack = [] 
 
+  # lookup_cache for the longest dns that match the query name:
+  ns_list = nscache_lookup(current_query_name, nscache) 
+
   # add the first query into stack
-  # current_query_name = query_stack.pop()
-  # last matching length = 0 
+  for dn_object in reverse(ns_list.items()):
+    query_stack.append((str(question._dn), str(dn_object)))
+  current_query_name = query_stack.pop()[1]
+
+  print current_query_name
+  last_matching_length = 0 
   # while 1: 
     # Add reply authoritive section to dn cache
     # Add reply glue entry to address cache
