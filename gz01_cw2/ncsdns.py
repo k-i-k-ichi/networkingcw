@@ -200,8 +200,13 @@ while 1:
     response_header = Header.fromData(response)
     response_QE = QE.fromData(response, len(response_header))
     (response_rr, response_rr_len,) = RR.fromData(response, len(response_header) + len(response_QE))
-  
-    # If contain Authoritive NS section
+ 
+ 
+    # If contains Answer section
+    if reponse_header._ancount > 0:
+      break
+
+    # If contains Authoritive NS section
     if response_header._nscount > 0:
       for i in range(0, response_header._nscount):
         rr_offset = len(response_header) + len(response_QE) 
