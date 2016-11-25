@@ -254,15 +254,15 @@ while 1:
         # For every Name server Entries
         if rr_ns_temp._type == 2:
           # add to cache
-            # If domainname already in cache update
-            if nscache.get(rr_ns_temp._dn) != None:
-              # update domainname dict value 
-              nscache.get(rr_ns_temp._dn)[DomainName(str(rr_ns_temp._nsdn))] = CacheEntry(expiration=MAXINT,
-                                                                              authoritative=True)
-            else:
-              # update nscache dict value
-              nscache[rr_ns_temp._dn] = OrderedDict([( DomainName(str(rr_ns_temp._nsdn)) , 
-                                 CacheEntry(expiration=MAXINT, authoritative=True) )]) 
+          # If domainname already in cache update
+          if nscache.get(rr_ns_temp._dn) != None:
+            # update domainname dict value 
+            nscache.get(rr_ns_temp._dn)[DomainName(str(rr_ns_temp._nsdn))] = CacheEntry(expiration=MAXINT,
+                                                                            authoritative=True)
+          else:
+            # update nscache dict value
+            nscache[rr_ns_temp._dn] = OrderedDict([( DomainName(str(rr_ns_temp._nsdn)), 
+                                                CacheEntry(expiration=MAXINT, authoritative=True) )]) 
           # construct new query packet 
           temp_query_packet = deepcopy(cur_query_packet)
           # Add to stack
