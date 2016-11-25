@@ -228,7 +228,7 @@ while 1:
                                       CacheEntry(expiration=rr_ar_temp._ttl, authoritative=True)]))
         # if answer is what we are looking for
         if rr_ns_temp._dn == question._dn:
-          break:
+          break
         else:
           # clear all stack up until the point of a different query
           while len(query_size) && ( query_stack[len(query_stack)-1:] == cur_query_packet ):
