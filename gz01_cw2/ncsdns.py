@@ -225,8 +225,7 @@ while 1:
           acache.get(rr_ar_temp._dn).update_rtt(rr_ar_temp._ttl)  
         else:
           acache[rr_ar_temp._dn] = ACacheEntry(dict([InetAddr(inet_ntoa(rr_ar_temp._inaddr)),
-                                      CacheEntry(expiration=rr_ar_temp._ttl,
-                                                        authoritative=True))])
+                                      CacheEntry(expiration=rr_ar_temp._ttl, authoritative=True)]))
         # if answer is what we are looking for
         if rr_ns_temp._dn == question._dn:
           break:
