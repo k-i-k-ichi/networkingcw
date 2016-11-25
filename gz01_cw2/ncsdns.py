@@ -151,12 +151,12 @@ while 1:
   current_query_name = str(question._dn)
 
   # lookup_cache for the longest dns that match the query name:
-  ns_list = nscache_lookup(current_query_name, nscache) 
+  ns_dict = nscache_lookup(current_query_name, nscache) 
+  dn_object =  ns_dict.items()[0][0] # OrderedDict -> tuple -> string
 
   # add the first query into stack
-  for dn_object in reversed(ns_list.items()):
-    import pdb; pdb.set_trace()
-    query_stack.append((str(question._dn), str(dn_object.items())))
+
+  query_stack.append((str(question._dn), str(dn_object)))
   last_matching_length = 0 
   
   # recursive query part
@@ -168,11 +168,14 @@ while 1:
     temp_header = Header(random_id, 0, 0, 1)
     temp_dn = DomainName(str(current_query[0]))
     temp_qe = QE(1, temp_dn)  
-
+    query = temp_header.pack() + temp_qe.pack()
+    import pdb; pdb.set_trace()
     # send query
-    cs.sendto(data,(str(current_query[1].items()), 53))
+    cs.sendto(query,(str(current_query[1]), 53))
+
     # Add reply authoritive section to dn cache
     # Add reply glue entry to address cache
+
     # Search in cache for the longest machting of domain name - dns name
       # matching_length = substringlength(current_query_name, cache_match)
     # Search in addr cache for address of that domainname
