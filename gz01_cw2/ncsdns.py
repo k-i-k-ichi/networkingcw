@@ -171,7 +171,7 @@ while 1:
 
     # compose new question query
     random_id = randint(1000, 10000)  
-    temp_header = Header(random_id, 0, 0, 1)
+    temp_header = Header(random_id, 0, 0, 1, 0, 0, 0, 0, False, False, False, True)
     temp_dn = DomainName(str(current_query[0]))
     temp_qe = QE(1, temp_dn)  
     query_packet = temp_header.pack() + temp_qe.pack()
