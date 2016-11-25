@@ -200,7 +200,7 @@ while 1:
     # parse query
     response_header = Header.fromData(response)
     response_QE = QE.fromData(response, len(response_header))
-
+    (response_rr, response_rr_len,) = RR.fromData(response, len(response_header) + len(response_QE))
     # If authoritive section count > 0 
       # Add reply authoritive section to dn cache
     # If glue record count > 0
