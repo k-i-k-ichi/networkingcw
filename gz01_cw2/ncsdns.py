@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from copy import copy
+from copy import copy, deepcopy
 from optparse import OptionParser, OptionValueError
 import pprint
 from random import seed, randint
@@ -120,7 +120,7 @@ sys.stdout.flush()
 setdefaulttimeout(TIMEOUT)
 cs = socket(AF_INET, SOCK_DGRAM)
  
-# Lookup method for longest match in nscache, return  string
+# Lookup method for longest match in nscache, return OrderedDict() 
 def nscache_lookup(string, cache):
   result_dict_obj = cache.get(string)
   iterate = 1
@@ -131,12 +131,21 @@ def nscache_lookup(string, cache):
       index = len(string) - 1
     tempobj = DomainName(string[index:])
     result_dict_obj = cache.get(tempobj)
-  return result_dict_obj.items()[0][0] # OrderedDict -> tuple -> string
+  return result_dict_obj # OrderedDict 
    
 # Lookup method for ns address in acache, return object 
 def acache_lookup(string, cache):
   result_obj = acache.get(DomainName(string))
   return result_obj
+
+def new_query_packet(query_string):
+    random_id = randint(1000, 10000)  
+    temp_header = Header(random_id, 0, 0, 1, 0, 0, 0, 0, False, False, False, True)
+    temp_dn = DomainName(str(query_string))
+    temp_qe = QE(1, temp_dn)  
+    query_packet = temp_header.pack() + temp_qe.pack()
+  return query_packet # Binary Packet 
+
 # This is a simple, single-threaded server that takes successive
 # connections with each iteration of the following loop:
   
@@ -156,44 +165,39 @@ while 1:
 
   cs.sendto(data, (ROOTNS_DN, 53))
   
-  current_query_name = str(question._dn)
-
   # lookup_cache for the longest dns that match the query name:
-  dn_string = nscache_lookup(current_query_name, nscache) 
+  dn_dict = nscache_lookup(str(question._dn), nscache) 
   
-  # add the first query into stack
-  query_stack.append((str(question._dn), str(dn_string) ))
+  # compose new question query for each 
+  for item in dn_dict:
+    query_packet = new_query_packet(str(question._dn))
+    # add all the  query into stack
+    query_stack.append((query_packet, str(item[0]))
   
   # recursive query part
   last_matching_length = 0 
   while 1: 
-    current_query = query_stack.pop()
-
-    # compose new question query
-    random_id = randint(1000, 10000)  
-    temp_header = Header(random_id, 0, 0, 1, 0, 0, 0, 0, False, False, False, True)
-    temp_dn = DomainName(str(current_query[0]))
-    temp_qe = QE(1, temp_dn)  
-    query_packet = temp_header.pack() + temp_qe.pack()
+    (cur_query_packet, cur_query_addr,) = query_stack.pop()
 
     # search through acache for query address  
-    search_result_obj = acache_lookup(current_query[1], acache)    
+    search_result_obj = acache_lookup(cur_query_addr, acache)    
     
     # handle failed search
-    # if search_result_obj == None:
+    if search_result_obj == None:
       # return current_query_name to cache
+      # contruct a new query object
       # add a new query for the dns address to query_stack
       # continue
 
-    current_query_dns_address = str(search_result_obj._dict.items()[0][0])
+    cur_query_dns_address = str(search_result_obj._dict.items()[0][0])
     ### I wish you could see 
     ### My misery mind
-    ### Trying get this variable assigned 
+    ### Trying to get this variable assigned 
     ### They should apologize
     ### Whoever designed this API
 
     # send query and receive query
-    cs.sendto(query_packet, (ROOTNS_IN_ADDR, 53))
+    cs.sendto(cur_query_packet, (str(cur_query_dns_address), 53))
     (response, xyz,) = cs.recvfrom(512)
     
     # parse query
@@ -205,23 +209,40 @@ while 1:
     # If contains Answer section
     if reponse_header._ancount > 0:
       break
-
+    
     # If contains Authoritive NS section
     if response_header._nscount > 0:
+      rr_ns_offset = len(response_header) + len(response_QE) 
       for i in range(0, response_header._nscount):
-        rr_offset = len(response_header) + len(response_QE) 
-        (rr_temp, rr_temp_len,) = RR.fromData(response, rr_offset)
-        if rr_temp._type == 2:
+        (rr_ns_temp, rr_ns_temp_len,) = RR.fromData(response, rr_ns_offset)
+
+        if rr_ns_temp._type == 2:
           # add to cache
-        rr_offset += rr_temp_len
+            # If domainname already in cache update
+            if nscache.get(rr_ns_temp._dn) != None:
+              # update domainname dict value 
+              nscache.get(rr_ns_temp._dn)[DomainName(str(rr_ns_temp._nsdn))] = CacheEntry(expiration=MAXINT,
+                                                                              authoritative=True)
+            else:
+              # update nscache dict value
+              nscache[rr_ns_temp._dn] = OrderedDict([(DomainName(str(rr_ns_temp._nsdn)), 
+                                 CacheEntry(expiration=MAXINT, authoritative=True))]))]) 
+          # construct new query packet 
+          temp_query_packet = deepcopy(cur_query_packet)
+          # Add to stack
+          query_stack.append((temp_query_packet, str(rr_ns_temp._nsdn)))
+        rr_ns_offset += rr_ns_temp_len
 
     # If contains additional record
     if response_header._arcount > 0
-      # Add reply glue entry to address cache
+      rr_ar_offset = rr_ns_offset
+      for i in range(0, response_header._arcount):
+        (rr_ar_temp, rr_ar_temp_len,) = RR.fromData(response, rr_ar_offset)
+        if rr_ar_temp._type == 1:
+          # add to cache
 
-    # Search in cache for the longest machting of domain name - dns name
-      # matching_length = substringlength(current_query_name, cache_match)
-    # Search in addr cache for address of that domainname
+        rr_ar_offset += rr_ar_temp_len  
+        
 
     # if reply header answer count != 0 and stack.size() != 0 
       # current_query_name = stack.pop()
