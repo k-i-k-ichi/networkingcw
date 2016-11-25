@@ -124,8 +124,8 @@ cs = socket(AF_INET, SOCK_DGRAM)
 def nscache_lookup(string, cache):
   result_dict_obj = cache.get(string)
   iterate = 1
+  index = 0
   while iterate < 5:
-    index = 0
     iterate += 1
     print string[index:]
     index = string.find(".", index) + 1 
