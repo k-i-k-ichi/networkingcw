@@ -154,7 +154,15 @@ while 1:
   question = QE.fromData(data, len(header))
   ## Check acache 
   if acache_lookup(question._dn, acache) != None:
-
+    result_from_cache = acache_lookup(question._dn, acache)
+    reply_header = Header(header._id, header._opcode, header_rcode, header._qdcount,
+                           1, 0, 0, True, False, header._tc, header._rd, header._ra)
+    reply_QE = deepcopy(header) 
+    reply_RR = RR_A(question._dn, result_from_cache._dict.items()[0][1]._expiration, 
+                                            toNetwork(result_from_cache._dict.items()[0][0]))
+    reply_packet = reply_header.pack() + reply_QE.pack() + reply_RR.pack()
+    ss.sendto(reply, address)
+    continue
   cs.sendto(data, (ROOTNS_DN, 53))
   
   # lookup_cache for the longest dns that match the query name:
