@@ -193,7 +193,7 @@ while 1:
     cs.sendto(query_packet,(query_dns_address, 53))
 
     # receive query
-    (response, _, )cs.recvfrom(512)
+    (response, _, ) = cs.recvfrom(512)
 
     # parse query
     response_header = Header.fromData(response)
