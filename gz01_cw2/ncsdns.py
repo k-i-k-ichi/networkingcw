@@ -167,7 +167,6 @@ while 1:
   # recursive query part
   last_matching_length = 0 
   while 1: 
-    import pdb; pdb.set_trace() 
     current_query = query_stack.pop()
 
     # compose new question query
@@ -176,6 +175,7 @@ while 1:
     temp_dn = DomainName(str(current_query[0]))
     temp_qe = QE(1, temp_dn)  
     query_packet = temp_header.pack() + temp_qe.pack()
+    import pdb; pdb.set_trace() 
 
     # search through acache for query address  
     search_result_obj = acache_lookup(current_query[1], acache)    
