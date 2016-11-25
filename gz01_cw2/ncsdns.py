@@ -139,6 +139,11 @@ def acache_lookup(string, cache):
   return result_obj
 # This is a simple, single-threaded server that takes successive
 # connections with each iteration of the following loop:
+  
+
+# create query stack
+query_stack = [] 
+
 while 1:
   (data, address,) = ss.recvfrom(512) # DNS limits UDP msgs to 512 bytes
   if not data:
@@ -151,8 +156,6 @@ while 1:
 
   cs.sendto(data, (ROOTNS_DN, 53))
   
-  # create query stack
-  query_stack = [] 
   current_query_name = str(question._dn)
 
   # lookup_cache for the longest dns that match the query name:
@@ -166,6 +169,7 @@ while 1:
   while 1: 
     import pdb; pdb.set_trace() 
     current_query = query_stack.pop()
+
     # compose new question query
     random_id = randint(1000, 10000)  
     temp_header = Header(random_id, 0, 0, 1)
