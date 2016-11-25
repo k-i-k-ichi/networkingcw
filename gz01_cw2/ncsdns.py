@@ -161,7 +161,6 @@ while 1:
   # add the first query into stack
   query_stack.append((str(question._dn), str(dn_string) ))
   
-  import pdb; pdb.set_trace() 
   # recursive query part
   last_matching_length = 0 
   while 1: 
@@ -177,7 +176,7 @@ while 1:
     search_result_obj = acache_lookup(current_query[1], acache)    
     
     # handle failed search
-    #if search_result_obj == None:
+    # if search_result_obj == None:
       # return current_query_name to cache
       # add a new query for the dns address to query_stack
       # continue
@@ -198,6 +197,7 @@ while 1:
     # parse query
     response_header = Header.fromData(response)
     response_QE = QE.fromData(response, len(response_header))
+    import pdb; pdb.set_trace() 
     # If authoritive section count > 0 
       # Add reply authoritive section to dn cache
     # If glue record count > 0
