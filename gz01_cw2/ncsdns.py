@@ -142,7 +142,7 @@ def acache_lookup(string, cache):
 # connections with each iteration of the following loop:
   
 while 1:
-    (data, address,) = ss.recvfrom(512) # DNS limits UDP msgs to 512 bytes
+  (data, address,) = ss.recvfrom(512) # DNS limits UDP msgs to 512 bytes
   if not data:
     log.error("client provided no data")
     continue
