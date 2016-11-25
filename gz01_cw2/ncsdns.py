@@ -175,7 +175,6 @@ while 1:
     temp_dn = DomainName(str(current_query[0]))
     temp_qe = QE(1, temp_dn)  
     query_packet = temp_header.pack() + temp_qe.pack()
-    import pdb; pdb.set_trace() 
 
     # search through acache for query address  
     search_result_obj = acache_lookup(current_query[1], acache)    
@@ -193,12 +192,10 @@ while 1:
     ### They should apologize
     ### Whoever designed this API
 
-    # send query
+    # send query and receive query
     cs.sendto(query_packet,(ROOTNS_IN_ADDR, 53))
-
-    # receive query
     (response, _, ) = cs.recvfrom(512)
-
+    import pdb; pdb.set_trace()
     # parse query
     response_header = Header.fromData(response)
     response_QE = QE.fromData(response, len(response_header))
