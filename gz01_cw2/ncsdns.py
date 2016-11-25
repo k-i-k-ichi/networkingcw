@@ -127,7 +127,7 @@ def nscache_lookup(string, cache):
   while iterate < 5:
     iterate += 1
     index = 0
-    print string[index:]
+    print index
     index = string.find('.', index) + 1 
     if index >= len(string):
       index = len(string) - 1
