@@ -159,13 +159,13 @@ while 1:
   dn_string = nscache_lookup(current_query_name, nscache) 
   
   # add the first query into stack
-  query_stack.append((str(question._dn), str(dn_string)))
+  query_stack.append((str(question._dn), str(dn_string) ))
   
+  import pdb; pdb.set_trace() 
   # recursive query part
   last_matching_length = 0 
   while 1: 
     current_query = query_stack.pop()
-    
     # compose new question query
     random_id = randint(1000, 10000)  
     temp_header = Header(random_id, 0, 0, 1)
@@ -198,7 +198,6 @@ while 1:
     # parse query
     response_header = Header.fromData(response)
     response_QE = QE.fromData(response, len(response_header))
-    import pdb; pdb.set_trace() 
     # If authoritive section count > 0 
       # Add reply authoritive section to dn cache
     # If glue record count > 0
