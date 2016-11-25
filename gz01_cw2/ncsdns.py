@@ -131,20 +131,12 @@ def nscache_lookup(string, cache):
       index = len(string) - 1
     tempobj = DomainName(string[index:])
     result_dict_obj = cache.get(tempobj)
-  return result_dict_obj # OrderedDict 
+  return result_dict_obj # Type OrderedDict 
    
 # Lookup method for ns address in acache, return object 
 def acache_lookup(string, cache):
   result_obj = acache.get(DomainName(string))
-  return result_obj
-
-def new_query_packet(query_string):
-    random_id = randint(1000, 10000)  
-    temp_header = Header(random_id, 0, 0, 1, 0, 0, 0, 0, False, False, False, True)
-    temp_dn = DomainName(str(query_string))
-    temp_qe = QE(1, temp_dn)  
-    query_packet = temp_header.pack() + temp_qe.pack()
-  return query_packet # Binary Packet 
+  return result_obj # Type AcacheEntry
 
 # This is a simple, single-threaded server that takes successive
 # connections with each iteration of the following loop:
@@ -170,7 +162,7 @@ while 1:
   
   # compose new question query for each 
   for item in dn_dict:
-    query_packet = new_query_packet(str(question._dn))
+    query_packet = deepcopy(data) 
     # add all the  query into stack
     query_stack.append((query_packet, str(item[0]))
   
@@ -187,7 +179,10 @@ while 1:
       # return current_query_name to cache
       query_stack.append((cur_query_packet, cur_query_addr))
       # contruct a new query object for this NS that we dont have addr for
-      next_query_packet = new_query_packet(str(cur_query_addr))
+      new_header = deep_copy(header)
+      new_qe = QE(1, DomainName(str(curr_query_addr)))
+      next_query_packet = new_header.pack() + new_qe.pack()
+
       # add a new query for the dns address to query_stack
       # search this NS IP back from the top
       query_stack.append(next_query_packet, ROOTNS_DN) 
@@ -212,10 +207,10 @@ while 1:
  
     # If contains Answer section
     if reponse_header._ancount > 0:
-      # add this answer to cache
-      rr_ns_temp = response_rr
-      rr_ns_temp_len = response_rr_len
-        
+       
+      rr_ar_temp = response_rr
+      rr_ar_temp_len = response_rr_len
+
       # If of type A 
       if rr_ar_temp._type == 1:
         # add to cache
@@ -225,11 +220,17 @@ while 1:
           acache[rr_ar_temp._dn] = ACacheEntry(dict([InetAddr(inet_ntoa(rr_ar_temp._inaddr)),
                                       CacheEntry(expiration=rr_ar_temp._ttl,
                                                         authoritative=True))])
-      # clear all stack up until the point of the next query
-      # This is subtle, in this execution tree, we find the addr of the current query
-      # Consider once we reach the leaf node (addr obtained) we should clear all 
-      # queries that are in the same sub tree
-      # If our tree is the Main Tree, means we found the answer for the data 
+        # if answer is what we are looking for
+        if rr_ns_temp._dn == question._dn:
+          break:
+        else:
+          # clear all stack up until the point of a different query
+          while len(query_size) && ( query_stack[len(query_stack)-1:] == cur_query_packet ):
+            query_stack.pop() 
+          continue
+      # else if Cname
+      else if rr_ar_temp._type == 5:
+        break
 
     # If the only authoritive record is SOA 
     # Terminate and construct a return message
@@ -286,6 +287,7 @@ while 1:
     
         
   # Construct reply object 
+  
   
   logger.log(DEBUG2, "our reply in full:") 
   logger.log(DEBUG2, hexdump(reply))
