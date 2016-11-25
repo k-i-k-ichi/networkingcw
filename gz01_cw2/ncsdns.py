@@ -261,8 +261,8 @@ while 1:
                                                                               authoritative=True)
             else:
               # update nscache dict value
-              nscache[rr_ns_temp._dn] = OrderedDict([(DomainName(str(rr_ns_temp._nsdn)), 
-                                 CacheEntry(expiration=MAXINT, authoritative=True))]))]) 
+              nscache[rr_ns_temp._dn] = OrderedDict([( DomainName(str(rr_ns_temp._nsdn)) , 
+                                 CacheEntry(expiration=MAXINT, authoritative=True) )]) 
           # construct new query packet 
           temp_query_packet = deepcopy(cur_query_packet)
           # Add to stack
