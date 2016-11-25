@@ -172,7 +172,7 @@ while 1:
   for item in dn_dict:
     query_packet = deepcopy(data) 
     # add all the  query into stack
-    query_stack.append((query_packet, str(item[0])))
+    query_stack.append((query_packet, str(item)))
   
   # recursive query part
   while 1: 
