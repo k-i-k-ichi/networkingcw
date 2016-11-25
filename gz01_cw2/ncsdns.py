@@ -149,19 +149,19 @@ def new_query_packet(query_string):
 # This is a simple, single-threaded server that takes successive
 # connections with each iteration of the following loop:
   
-
-# create query stack
-query_stack = [] 
-
 while 1:
-  (data, address,) = ss.recvfrom(512) # DNS limits UDP msgs to 512 bytes
+    (data, address,) = ss.recvfrom(512) # DNS limits UDP msgs to 512 bytes
   if not data:
     log.error("client provided no data")
     continue
+  # create query stack
+  query_stack = [] 
+
 
   header = Header.fromData(data)
   question = QE.fromData(data, len(header))
   ## Check acache 
+  if acache_lookup(question._dn, acache) != None:
 
   cs.sendto(data, (ROOTNS_DN, 53))
   
@@ -182,12 +182,16 @@ while 1:
     # search through acache for query address  
     search_result_obj = acache_lookup(cur_query_addr, acache)    
     
-    # handle failed search
+    # Failed search 
     if search_result_obj == None:
       # return current_query_name to cache
-      # contruct a new query object
+      query_stack.append((cur_query_packet, cur_query_addr))
+      # contruct a new query object for this NS that we dont have addr for
+      next_query_packet = new_query_packet(str(cur_query_addr))
       # add a new query for the dns address to query_stack
-      # continue
+      # search this NS IP back from the top
+      query_stack.append(next_query_packet, ROOTNS_DN) 
+      continue
 
     cur_query_dns_address = str(search_result_obj._dict.items()[0][0])
     ### I wish you could see 
@@ -208,14 +212,39 @@ while 1:
  
     # If contains Answer section
     if reponse_header._ancount > 0:
-      break
-    
+      # add this answer to cache
+      rr_ns_temp = response_rr
+      rr_ns_temp_len = response_rr_len
+        
+      # If of type A 
+      if rr_ar_temp._type == 1:
+        # add to cache
+        if acache.get(rr_ar_temp._dn) != None:
+          acache.get(rr_ar_temp._dn).update_rtt(rr_ar_temp._ttl)  
+        else:
+          acache[rr_ar_temp._dn] = ACacheEntry(dict([InetAddr(inet_ntoa(rr_ar_temp._inaddr)),
+                                      CacheEntry(expiration=rr_ar_temp._ttl,
+                                                        authoritative=True))])
+      # clear all stack up until the point of the next query
+      # This is subtle, in this execution tree, we find the addr of the current query
+      # Consider once we reach the leaf node (addr obtained) we should clear all 
+      # queries that are in the same sub tree
+      # If our tree is the Main Tree, means we found the answer for the data 
+
+    # If the only authoritive record is SOA 
+    # Terminate and construct a return message
+    if reponse_header._nscount == 1:
+      (rr_ns_temp, rr_ns_temp_len,) = RR.fromData(response, len(response_header) + len(response_QE)) 
+      if rr_ns_temp._type == 6:
+       break 
+
     # If contains Authoritive NS section
     if response_header._nscount > 0:
       rr_ns_offset = len(response_header) + len(response_QE) 
       for i in range(0, response_header._nscount):
         (rr_ns_temp, rr_ns_temp_len,) = RR.fromData(response, rr_ns_offset)
-
+        
+        # For every Name server Entries
         if rr_ns_temp._type == 2:
           # add to cache
             # If domainname already in cache update
@@ -240,13 +269,15 @@ while 1:
         (rr_ar_temp, rr_ar_temp_len,) = RR.fromData(response, rr_ar_offset)
         if rr_ar_temp._type == 1:
           # add to cache
-
-        rr_ar_offset += rr_ar_temp_len  
+          if acache.get(rr_ar_temp._dn) != None:
+            acache.get(rr_ar_temp._dn).update_rtt(rr_ar_temp._ttl)  
+          else:
+            acache[rr_ar_temp._dn] = ACacheEntry(dict([InetAddr(inet_ntoa(rr_ns_temp._inaddr)),
+                                        CacheEntry(expiration=rr_ar_temp._ttl,
+                                                          authoritative=True))])
+        rr_ar_offset += rr_ar_temp_len 
         
 
-    # if reply header answer count != 0 and stack.size() != 0 
-      # current_query_name = stack.pop()
-      # continue
     # else if reply header answer count != 0 and stack.size() == 0
       # break
     # else if (if we are not making progress)
@@ -254,6 +285,7 @@ while 1:
 
     
         
+  # Construct reply object 
   
   logger.log(DEBUG2, "our reply in full:") 
   logger.log(DEBUG2, hexdump(reply))
