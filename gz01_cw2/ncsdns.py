@@ -125,8 +125,7 @@ def nscache_lookup(string, cache):
   result_dict_obj = cache.get(string)
   iterate = 1
   index = 0
-  while iterate < 5:
-    iterate += 1
+  while result_dict_obj == None:
     index = string.find(".", index) + 1 
     if index >= len(string):
       index = len(string) - 1
@@ -157,7 +156,7 @@ while 1:
   ns_list = nscache_lookup(current_query_name, nscache) 
 
   # add the first query into stack
-  for dn_object in reverse(ns_list.items()):
+  for dn_object in reversed(ns_list.items()):
     query_stack.append((str(question._dn), str(dn_object)))
 
   current_query_name = query_stack.pop()[1]
