@@ -194,8 +194,9 @@ while 1:
 
     # send query and receive query
     cs.sendto(query_packet, (ROOTNS_IN_ADDR, 53))
-    import pdb; pdb.set_trace()
     (response, xyz,) = cs.recvfrom(512)
+    
+    import pdb; pdb.set_trace()
     # parse query
     response_header = Header.fromData(response)
     response_QE = QE.fromData(response, len(response_header))
