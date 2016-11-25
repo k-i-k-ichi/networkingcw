@@ -177,7 +177,7 @@ while 1:
     search_result_obj = acache_lookup(current_query[1], acache)    
     
     # handle failed search
-    if search_result_obj == None:
+    #if search_result_obj == None:
       # return current_query_name to cache
       # add a new query for the dns address to query_stack
       # continue
