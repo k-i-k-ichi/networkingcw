@@ -194,7 +194,7 @@ while 1:
 
     # send query and receive query
     cs.sendto(query_packet,(ROOTNS_IN_ADDR, 53))
-    (response, _,) = cs.recvfrom(512)
+    (response, xyz,) = cs.recvfrom(512)
     # parse query
     response_header = Header.fromData(response)
     response_QE = QE.fromData(response, len(response_header))
