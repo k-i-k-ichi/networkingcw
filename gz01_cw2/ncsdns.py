@@ -145,8 +145,6 @@ while 1:
   question = QE.fromData(data, len(header))
 
   cs.sendto(data, (ROOTNS_DN, 53))
-  (reply, _,) = cs.recvfrom(512)
-  reply_header = Header.fromData(data)
 
   # create query stack
   query_stack = [] 
@@ -157,12 +155,22 @@ while 1:
 
   # add the first query into stack
   for dn_object in reversed(ns_list.items()):
-    query_stack.append((str(question._dn), str(dn_object)))
-
-  current_query_name = query_stack.pop()[1]
-  import pdb; pdb.set_trace()
+    import pdb; pdb.set_trace()
+    query_stack.append((str(question._dn), str(dn_object.items())))
   last_matching_length = 0 
-  # while 1: 
+  
+  # recursive query part
+  while 1: 
+    current_query = query_stack.pop()
+    
+    # compose new question query
+    random_id = random.randint(1000, 10000)  
+    temp_header = Header(random_id, 0, 0, 1)
+    temp_dn = DomainName(str(current_query[0]))
+    temp_qe = QE(1, temp_dn)  
+
+    # send query
+    cs.sendto(data,(str(current_query[1].items()), 53))
     # Add reply authoritive section to dn cache
     # Add reply glue entry to address cache
     # Search in cache for the longest machting of domain name - dns name
