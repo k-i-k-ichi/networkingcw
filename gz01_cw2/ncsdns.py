@@ -279,9 +279,9 @@ while 1:
           if acache.get(rr_ar_temp._dn) != None:
             acache.get(rr_ar_temp._dn).update_rtt(rr_ar_temp._ttl)  
           else:
-            acache[rr_ar_temp._dn] = ACacheEntry(dict([InetAddr(inet_ntoa(rr_ns_temp._inaddr)),
+            acache[rr_ar_temp._dn] = ACacheEntry(dict([(InetAddr(inet_ntoa(rr_ns_temp._inaddr)),
                                         CacheEntry(expiration=rr_ar_temp._ttl,
-                                                          authoritative=True))])
+                                                          authoritative=True))]))
         rr_ar_offset += rr_ar_temp_len 
         
 
