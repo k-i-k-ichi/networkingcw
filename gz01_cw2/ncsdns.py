@@ -122,10 +122,10 @@ cs = socket(AF_INET, SOCK_DGRAM)
  
 # Lookup address in nscache
 def nscache_lookup(string, cache):
-  print "125"
   result_dict_obj = cache.get(string)
-  print "127"
-  while result_dict_obj == None:
+  iterate = 1
+  while iterate < 5:
+    iterate += 1
     index = 0
     print string[index:]
     index = string.find('.', index) + 1 
