@@ -175,7 +175,6 @@ while 1:
     query_stack.append((query_packet, str(item[0]))
   
   # recursive query part
-  last_matching_length = 0 
   while 1: 
     (cur_query_packet, cur_query_addr,) = query_stack.pop()
 
