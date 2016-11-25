@@ -196,11 +196,12 @@ while 1:
     cs.sendto(query_packet, (ROOTNS_IN_ADDR, 53))
     (response, xyz,) = cs.recvfrom(512)
     
-    import pdb; pdb.set_trace()
     # parse query
     response_header = Header.fromData(response)
     response_QE = QE.fromData(response, len(response_header))
     (response_rr, response_rr_len,) = RR.fromData(response, len(response_header) + len(response_QE))
+    import pdb; pdb.set_trace()
+    test = 2
     # If authoritive section count > 0 
       # Add reply authoritive section to dn cache
     # If glue record count > 0
