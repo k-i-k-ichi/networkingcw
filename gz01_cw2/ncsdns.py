@@ -153,7 +153,7 @@ while 1:
   header = Header.fromData(data)
   question = QE.fromData(data, len(header))
   ## Check acache 
-  if acache_lookup(question._dn, acache) != None:
+  if acache_lookup(str(question._dn), acache) != None:
     result_from_cache = acache_lookup(question._dn, acache)
     reply_header = Header(header._id, header._opcode, header_rcode, header._qdcount,
                            1, 0, 0, True, False, header._tc, header._rd, header._ra)
