@@ -270,7 +270,7 @@ while 1:
         rr_ns_offset += rr_ns_temp_len
 
     # If contains additional record
-    if response_header._arcount > 0
+    if response_header._arcount > 0:
       rr_ar_offset = rr_ns_offset
       for i in range(0, response_header._arcount):
         (rr_ar_temp, rr_ar_temp_len,) = RR.fromData(response, rr_ar_offset)
