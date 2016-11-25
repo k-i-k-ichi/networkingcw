@@ -200,11 +200,18 @@ while 1:
     response_header = Header.fromData(response)
     response_QE = QE.fromData(response, len(response_header))
     (response_rr, response_rr_len,) = RR.fromData(response, len(response_header) + len(response_QE))
-    import pdb; pdb.set_trace()
-    test = 2
-    # If authoritive section count > 0 
-      # Add reply authoritive section to dn cache
-    # If glue record count > 0
+  
+    # If contain Authoritive NS section
+    if response_header._nscount > 0:
+      for i in range(0, response_header._nscount):
+        rr_offset = len(response_header) + len(response_QE) 
+        (rr_temp, rr_temp_len,) = RR.fromData(response, rr_offset)
+        if rr_temp._type == 2:
+          # add to cache
+        rr_offset += rr_temp_len
+
+    # If contains additional record
+    if response_header._arcount > 0
       # Add reply glue entry to address cache
 
     # Search in cache for the longest machting of domain name - dns name
