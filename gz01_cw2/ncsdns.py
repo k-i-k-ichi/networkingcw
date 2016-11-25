@@ -231,7 +231,7 @@ while 1:
           break
         else:
           # clear all stack up until the point of a different query
-          while len(query_size) && ( query_stack[len(query_stack)-1:] == cur_query_packet ):
+          while len(query_size) and (query_stack[len(query_stack)-1:] == cur_query_packet):
             query_stack.pop() 
           continue
       # else if Cname
