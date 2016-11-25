@@ -160,7 +160,7 @@ while 1:
     query_stack.append((str(question._dn), str(dn_object)))
 
   current_query_name = query_stack.pop()[1]
-  import pdb; pdb_set_trace()
+  import pdb; pdb.set_trace()
   last_matching_length = 0 
   # while 1: 
     # Add reply authoritive section to dn cache
