@@ -125,10 +125,10 @@ def nscache_lookup(string, cache):
   result_dict_obj = cache.get(string)
   iterate = 1
   while iterate < 5:
-    iterate += 1
     index = 0
-    print index
-    index = string.find('.', index) + 1 
+    iterate += 1
+    print string[index:]
+    index = string.find(".", index) + 1 
     if index >= len(string):
       index = len(string) - 1
     tempobj = DomainName(string[index:])
