@@ -128,8 +128,8 @@ def nscache_lookup(string, cache):
     index = 0
     iterate += 1
     print string[index:]
-    import pdb; pdb.set_trace()
     index = string.find(".", index) + 1 
+    import pdb; pdb.set_trace()
     if index >= len(string):
       index = len(string) - 1
     tempobj = DomainName(string[index:])
