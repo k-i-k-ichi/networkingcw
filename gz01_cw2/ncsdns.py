@@ -164,6 +164,7 @@ while 1:
   # recursive query part
   last_matching_length = 0 
   while 1: 
+    import pdb; pdb.set_trace() 
     current_query = query_stack.pop()
     # compose new question query
     random_id = randint(1000, 10000)  
@@ -197,7 +198,6 @@ while 1:
     # parse query
     response_header = Header.fromData(response)
     response_QE = QE.fromData(response, len(response_header))
-    import pdb; pdb.set_trace() 
     # If authoritive section count > 0 
       # Add reply authoritive section to dn cache
     # If glue record count > 0
