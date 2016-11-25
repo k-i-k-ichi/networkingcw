@@ -164,7 +164,7 @@ while 1:
     current_query = query_stack.pop()
     
     # compose new question query
-    random_id = random.randint(1000, 10000)  
+    random_id = randint(1000, 10000)  
     temp_header = Header(random_id, 0, 0, 1)
     temp_dn = DomainName(str(current_query[0]))
     temp_qe = QE(1, temp_dn)  
