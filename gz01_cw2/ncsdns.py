@@ -190,7 +190,7 @@ while 1:
     ### Whoever designed this API
 
     # send query
-    cs.sendto(query_packet,(query_dns_address, 53))
+    cs.sendto(query_packet,(ROOTNS_IN_ADDR, 53))
 
     # receive query
     (response, _, ) = cs.recvfrom(512)
