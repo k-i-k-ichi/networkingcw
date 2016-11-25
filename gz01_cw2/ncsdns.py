@@ -235,7 +235,7 @@ while 1:
             query_stack.pop() 
           continue
       # else if Cname
-      else if rr_ar_temp._type == 5:
+      elif rr_ar_temp._type == 5:
         break
 
     # If the only authoritive record is SOA 
